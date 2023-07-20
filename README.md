@@ -1,0 +1,1 @@
+Demo for the OnSemi AR0830 camera with 480p image that is displayed on an HDMI display

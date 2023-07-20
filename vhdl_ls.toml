@@ -1,0 +1,30 @@
+# auto-generated
+[Libraries]
+work.files = [
+	'Libraries/HDMI/SDRAM_HDMI/VS_SDRAM_PLL.vhd',
+	'Generated/AR0830_Cam_Config_Test.vhd',
+	'Generated/AR0830_Camera.vhd',
+	'Generated/CAM_HDMI_Out.vhd',
+	'Generated/Camera_Capture_SDRAM.vhd',
+	'Generated/Color_Correction_Filter.vhd',
+	'Generated/HDMI_Out.vhd',
+	'Generated/I2C_Master_Interface.vhd',
+	'Generated/Image_Data_Package.vhd',
+	'Generated/Test_AR0830.vhd',
+	'Generated/VS_SDRAM_Interface.vhd'
+]
+[libraries.work]
+files = [
+	'Libraries/HDMI/SDRAM_HDMI/VS_SDRAM_PLL.vhd',
+	'Generated/AR0830_Cam_Config_Test.vhd',
+	'Generated/AR0830_Camera.vhd',
+	'Generated/CAM_HDMI_Out.vhd',
+	'Generated/Camera_Capture_SDRAM.vhd',
+	'Generated/Color_Correction_Filter.vhd',
+	'Generated/HDMI_Out.vhd',
+	'Generated/I2C_Master_Interface.vhd',
+	'Generated/Image_Data_Package.vhd',
+	'Generated/Test_AR0830.vhd',
+	'Generated/VS_SDRAM_Interface.vhd'
+]
+# auto-generated-end

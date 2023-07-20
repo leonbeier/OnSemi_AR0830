@@ -1,0 +1,129 @@
+Main
+(
+
+    Camera_CLK_Lane      : IN  STD_LOGIC;
+    Camera_Data_Lane     : IN  STD_LOGIC_VECTOR (3 downto 0);
+    Camera_Cam_Reset     : OUT STD_LOGIC;
+    Camera_Enable        : OUT STD_LOGIC;
+    Camera_SCL           : INOUT STD_LOGIC;
+    Camera_SDA           : INOUT STD_LOGIC;
+
+    HDMI_DATA            : OUT    STD_LOGIC_VECTOR(2 downto 0);
+    HDMI_CLK             : OUT    STD_LOGIC;
+    HDMI_HPD             : IN     STD_LOGIC;
+
+    Capture_sdram_addr   : OUT    STD_LOGIC_VECTOR (11 downto 0);
+    Capture_sdram_ba     : OUT    STD_LOGIC_VECTOR (1 downto 0);
+    Capture_sdram_cas_n  : OUT    STD_LOGIC;
+    Capture_sdram_dq     : INOUT  STD_LOGIC_VECTOR (15 downto 0) := (others => '0');
+    Capture_sdram_dqm    : OUT    STD_LOGIC_VECTOR (1 downto 0);
+    Capture_sdram_ras_n  : OUT    STD_LOGIC;
+    Capture_sdram_we_n   : OUT    STD_LOGIC;
+    Capture_sdram_clk    : OUT    STD_LOGIC;
+    
+    debug : OUT STD_LOGIC_VECTOR(7 downto 0);
+    
+    TX                   : OUT STD_LOGIC;
+    RX                   : IN  STD_LOGIC;
+)
+{
+
+--GENERATED SIGNALS---------------------------------------------------------------------------------------------
+
+    --OnSemi Camera to USB----------------------------------------------------------------------------------------
+
+    --More Settings in Libraries/OnSemi_Image_Data_USB.vhdp
+
+    --Clock Settings in USB/USB_SDRAM_PLL
+    CONSTANT Pixel_Clock : NATURAL := 25000000;
+    
+    --RAW Camera Stream
+    SIGNAL Camera_Stream         : rgb_stream;
+    
+    --Color Correction Component Streams
+    SIGNAL Color_Correction_Filter_iStream      : rgb_stream;
+    SIGNAL Color_Correction_Filter_oStream      : rgb_stream;
+    
+    --Stream for HDMI output
+    SIGNAL Output_Stream : rgb_stream;
+    
+
+--GENERATED CODE------------------------------------------------------------------------------------------------
+
+    --OnSemi Camera to USB----------------------------------------------------------------------------------------
+
+    Color_Correction_Filter_iStream <= Camera_Stream;
+    Output_Stream <= Color_Correction_Filter_oStream;
+
+
+--GENERATED COMPONENTS------------------------------------------------------------------------------------------
+
+    --OnSemi Camera to USB----------------------------------------------------------------------------------------
+
+--Camera Interface------------------------------------------------------------------
+    
+    Camera_Enable <= '1';
+
+    SIGNAL debug_cam : STD_LOGIC_VECTOR(7 downto 0);
+    
+    --Receive CSI Data
+    NewComponent AR0830_Camera
+    (
+        CLK_Frequency   => Pixel_Clock,
+        CLK_as_PCLK     => true,
+        Auto_Brightness => true,
+
+        CLK           => Pixel_CLK,
+
+        CLK_Lane      => Camera_CLK_Lane,
+        Data_Lane     => Camera_Data_Lane,
+        Cam_Reset     => Camera_Cam_Reset,
+        SCL           => Camera_SCL,
+        SDA           => Camera_SDA,
+
+        oStream       => Camera_Stream,
+        
+        debug => debug,
+    );
+    
+    --Apply Filters-------------------------------------------------------------
+    
+    NewComponent Color_Correction_Filter
+    (
+        CLK_Edge     => true,
+
+        R_Multiplier => 3,
+        R_Divider    => 2,
+        R_Add        => 0,
+        G_Multiplier => 1,
+        G_Divider    => 1,
+        G_Add        => 0,
+        B_Multiplier => 3,
+        B_Divider    => 2,
+        B_Add        => 0,
+        iStream      => Color_Correction_Filter_iStream,
+        oStream      => Color_Correction_Filter_oStream,
+    );
+    
+    --Output image with HDMI-------------------------------------------------------------
+
+    SIGNAL Pixel_CLK : STD_LOGIC;
+    
+    NewComponent CAM_HDMI_Out
+    (
+        iStream     => Output_Stream,
+        sdram_addr  => Capture_sdram_addr,
+        sdram_ba    => Capture_sdram_ba,
+        sdram_cas_n => Capture_sdram_cas_n,
+        sdram_dq    => Capture_sdram_dq,
+        sdram_dqm   => Capture_sdram_dqm,
+        sdram_ras_n => Capture_sdram_ras_n,
+        sdram_we_n  => Capture_sdram_we_n,
+        sdram_clk   => Capture_sdram_clk,
+        Pixel_CLK   => Pixel_CLK,
+        HDMI_DATA   => HDMI_DATA,
+        HDMI_CLK    => HDMI_CLK,
+        HDMI_HPD    => HDMI_HPD,
+    );
+    
+}

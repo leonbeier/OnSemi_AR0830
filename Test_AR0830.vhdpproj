@@ -5,7 +5,7 @@
     <File Include="Libraries/CSI_Camera/ALTDDIO_IN.qsys.vhdp" />
     <File Include="Libraries/CSI_Camera/ALTSYNCRAM.qsys.vhdp" />
     <File Include="Libraries/CSI_Camera/AR0830_Camera.vhdp" />
-    <File Include="Libraries/CSI_Camera/AR0830_Camera_Config_Test.vhdp" />
+<File Include="Libraries/CSI_Camera/AR0830_Camera_Config.vhdp" />
     <File Include="Libraries/CSI_Camera/I2C.vhdp" />
     <File Include="Libraries/Filters/Color_Correction.vhdp" />
     <File Include="Libraries/HDMI/SDRAM_HDMI/Camera_Capture_SDRAM.vhdp" />
